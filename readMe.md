@@ -31,5 +31,8 @@ So that's where I'll start. With the backend.
 
 ### Step Two: The Backend
 
-
+(Type up before next session)
+// Routes configured
+// Nodemon
+// Encoding / testing routes — postman, error handling, etc
 
