@@ -20,7 +20,7 @@ app.get('/ping', (req,res) =>{
     pi.ping(req,res);
 })
 
-// getting author info, when requested
+// getting author (that's me) info, when requested
 const info = require('./controllers/info');
 app.get('/info', (req,res) => {
     info.info(req,res);
@@ -49,7 +49,7 @@ app.delete('/conversations', (req,res) => {
 
 
 
-const PORT = process.env.PORT || 3001;
+const PORT = process.env.PORT || 4000;
 app.listen(PORT, () => {
     console.log(`live and listening on port ${PORT}.`)
 })

@@ -27,12 +27,25 @@ From [what](https://sharejs.org/) I [read](https://stackoverflow.com/questions/2
 
 But my sense of this project is that I won't *need* to implement one, until I'm ready. For now I can focus on the basic parts of the frontend / backend, and find a passable OT library to handle text mutations.
 
-So that's where I'll start. With the backend.
+So that's where I'll start — with dummy mockups for the front and backends
 
-### Step Two: The Backend
+### Step Two: Dummy front and backends
 
-(Type up before next session)
-// Routes configured
-// Nodemon
-// Encoding / testing routes — postman, error handling, etc
+First things first, I wanted to get my server up and running. 
+
+That was easy enough. Configured some basic routes with `Node.js` and `Express`, and testing with `Postman`. Now, each route is returning what it's supposed to (roughly).
+
+![postman testing screenshot](doc-assets/author-info.png).
+
+After that, I wanted to make a bare-bones version of the front-end, that roughly mimicked what the Ava test criteria are asking for:
+
+![conversation list](doc-assets/conv-list.png)
+
+![conv](doc-assets/conv.png)
+
+It's not much. There's no routing. No functionality. You click a button and it does...nothing.
+
+But it's there, and it's a start!
+
+The next step will be to get the front- and back-ends talking with each other. 
 
