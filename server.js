@@ -47,6 +47,12 @@ app.delete('/conversations', (req,res) => {
     conversations.delete_conversations(req,res);
 })
 
+//adding a new conversation
+app.post('/conversations', (req,res) => {
+    conversations.new_conversations(req,res);
+})
+
+
 
 
 const PORT = process.env.PORT || 4000;

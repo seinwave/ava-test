@@ -1,22 +1,28 @@
+const fs = require('fs');
+
 const get_conversations = (req, res) =>{
-    res.status(200).send({
-        "conversations": [
-            {
-                "id":"string",
-                "lastMutation": "Object, last mutation applied",
-                "text": "string"
-            },
-            "..."
-        ],
-        "message" : "TBD_error_message",
-        "ok" : "tbd_boolean"
+    let conversations = []
+    fs.readdir('./conversations', (err,files) => {
+        files.map(file => {
+            conversations.push({"id":file})
+        })
+    return res.status(200).send(conversations)
     })
 }
 
 const delete_conversations = (req, res) =>{
-    res.status(204).send({
-        "msg" : "TBD_error_message",
-        "ok" : "tbd_boolean"
+    
+    console.log(req.body.file)
+    const file = req.body.file;
+    fs.unlink(`./conversations/${file}`, (err) =>
+    {
+        if (err){
+            console.log(err)
+        }
+    })
+
+    return res.status(200).send({
+        "msg" : "conversation deleted"
     })
     
 }
