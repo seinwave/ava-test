@@ -49,7 +49,12 @@ app.delete('/conversations', (req,res) => {
 
 //adding a new conversation
 app.post('/conversations', (req,res) => {
-    conversations.new_conversations(req,res);
+    conversations.new_conversation(req,res);
+})
+
+//renaming conversations
+app.put('/conversations', (req,res) => {
+    conversations.rename_conversation(req,res);
 })
 
 

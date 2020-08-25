@@ -11,8 +11,6 @@ const get_conversations = (req, res) =>{
 }
 
 const delete_conversations = (req, res) =>{
-    
-    console.log(req.body.file)
     const file = req.body.file;
     fs.unlink(`./conversations/${file}`, (err) =>
     {
@@ -27,8 +25,33 @@ const delete_conversations = (req, res) =>{
     
 }
 
+const new_conversation = (req,res) => {
+    const file = req.body.file;
+    const filePath = `./conversations/${file}`
+    const fileContent = '';
+
+    fs.writeFile(filePath, fileContent, (err) => {
+        if (err){
+        console.log(err)};
+        
+        })
+}
+
+const rename_conversation = (req, res) =>{
+    const file = req.body.file[0].id;
+    const oldPath = `./conversations/${file}`
+    const newName = req.body.newName;
+    const newPath = `./conversations/${newName}`
+
+    fs.rename(oldPath, newPath, (err) => {
+        if (err) console.log(err);
+    });
+}
+
 
 module.exports = {
     get_conversations,
-    delete_conversations
+    delete_conversations,
+    new_conversation,
+    rename_conversation
 }
