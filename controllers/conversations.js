@@ -10,6 +10,7 @@ const get_conversations = (req, res) =>{
     })
 }
 
+
 const delete_conversations = (req, res) =>{
     const file = req.body.file;
     fs.unlink(`./conversations/${file}`, (err) =>
@@ -35,6 +36,10 @@ const new_conversation = (req,res) => {
         console.log(err)};
         
         })
+
+    return res.status(200).send({
+            "msg" : "conversation created"
+        })
 }
 
 const rename_conversation = (req, res) =>{
@@ -46,6 +51,10 @@ const rename_conversation = (req, res) =>{
     fs.rename(oldPath, newPath, (err) => {
         if (err) console.log(err);
     });
+
+    return res.status(200).send({
+        "msg" : "conversation renamed"
+    })
 }
 
 
