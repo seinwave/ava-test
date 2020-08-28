@@ -1,0 +1,7 @@
+The moment I wake  up //
+Before I put on my make up //
+{CONVERSATION.TITLE.TXT}
+
+While combing my hair now //
+And wondering what dress to wear now //
+{CONVERSATION.TITLE.TXT}

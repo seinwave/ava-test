@@ -21,34 +21,6 @@ const get_conversations = (req, res) =>{
 }
 
 
-// SOME SCRATCH,
-// TRYING TO READ CONTENT OF EACH FILE
-// USE REDUCE() YOU COWARD
-// conversationProcesser = (file, content, arr) => {
-//     arr.push({"id":file, "content":content})
-//     console.log(arr)
-//     return arr;
-// }
-
-
-// fs.readdir('./conversations', (err,files) => {
-//     files.map(file => {
-//         console.log(file)
-//         conversations.push({"id" : file})
-//         console.log(conversations)
-//         return conversations
-        
-//         // fs.readFile(`./conversations/${file}`, "utf8", (err,data) =>{
-//         //     if (err) throw err;
-//         //     const content = data;
-//         //     console.log(content)
-//         //     return conversationProcesser(file, content, conversations);
-//         // })
-//     })
-
-//     return conversations
-
-
 const delete_conversations = (req, res) =>{
     const file = req.body.file;
     fs.unlink(`./conversations/${file}`, (err) =>
@@ -71,23 +43,23 @@ const new_conversation = (req,res) => {
 
     fs.writeFile(filePath, fileContent, (err) => {
         if (err){
-        console.log(err)};
-        
-        })
+        console.log(err)
+        };
+    })
 
     return res.status(200).send({
             "msg" : "conversation created"
-        })
+    })
 }
 
 const rename_conversation = (req, res) =>{
     const file = req.body.file[0].id;
     const oldPath = `./conversations/${file}`
     const newName = req.body.newName;
-    const newPath = `./conversations/${newName}`
+    const newPath = `./conversations/${newName}.txt`
 
     fs.rename(oldPath, newPath, (err) => {
-        if (err) console.log(err);
+        if (err) console.log(err)
     });
 
     return res.status(200).send({

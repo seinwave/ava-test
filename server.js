@@ -1,18 +1,60 @@
+// ---- GETTING REQUIRED MODULES ----
 const express = require('express');
 const app = express();
+const http = require('http');
+
 const cors = require('cors');
-app.use(cors())
+app.use(cors());
+
+// for handling POST requests
 const bodyParser = require('body-parser');
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 
+// setting CORS configuration
 app.use( (req, res, next) => {
-    res.header('Access-Control-Allow-Origin', '*');
+    
+    res.header('Access-Control-Allow-Origin', "*")
     res.header('Access-Control-Allow-Headers', 
     'Origin, X-Requested-With, Content-Type, Accept');
     next();
 });
 
+// shareDB modules
+const ShareDB = require('sharedb');
+const backend = new ShareDB();
+
+// websocket modules
+const WebSocket = require('ws');
+const WebSocketJSONStream = require('@teamwork/websocket-json-stream');
+
+
+// ---- CONFIGURING OT BACKEND ----
+
+// connecting server-hosted documents
+// to shareDB backend
+var connection = backend.connect();
+  var doc = connection.get('examples', 'textarea');
+  doc.fetch(function(err) {
+    if (err) throw err;
+    if (!doc) {
+      doc.create({content: ''});
+      return;
+    }
+});
+
+
+// creating a websocket-ready server,
+// that shareDB is listening to
+const server = http.createServer(app);
+const wss = new WebSocket.Server({server: server});
+wss.on('connection', (ws) => {
+    const stream = new WebSocketJSONStream(ws);
+    backend.listen(stream);
+})
+
+
+// ---- ROUTING ----
 
 // ping & pong — simple call & response
 const pi = require('./controllers/ping');
@@ -59,8 +101,9 @@ app.put('/conversations', (req,res) => {
 
 
 
+// ---- INITIALIZING THE SERVER ----
 
 const PORT = process.env.PORT || 4000;
-app.listen(PORT, () => {
+server.listen(PORT, () => {
     console.log(`live and listening on port ${PORT}.`)
 })
