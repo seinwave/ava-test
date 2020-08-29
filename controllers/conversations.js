@@ -1,7 +1,6 @@
 const fs = require('fs');
 
 const get_conversations = (req, res) =>{
-
     let conversations = []
     fs.readdir('./conversations', (err,files) => {
         files.map(file => {
