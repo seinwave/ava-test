@@ -3,20 +3,38 @@ const fs = require('fs');
 const mutations = (req, res) => {
     const file = req.body.file
     const text = req.body.text
-    const filePath = `./conversations/${file}`
+    const filePath = `./conversations/${file}.json`
 
-    fs.writeFile(filePath, text, (err) => {
+
+    let conversation = JSON.parse(fs.readFileSync(filePath));
+    conversation.content = text;
+    let ready = JSON.stringify(conversation);
+
+    fs.writeFile(filePath, ready, (err) => {
         if (err){
         console.log(err)};
-        
         })
-    return res.status(201).send({
-        "msg" : "error_message",
-        "ok" : "TBD_boolean",
-        "text" : "current_string, post-mutation"
-    })
+}
+
+const mutationLogger = (req, res) => {
+
+    const file = req.body.file;
+    const filePath = `./conversations/${file}.json`
+    const mutation = req.body.mutation;
+
+    let conversation = JSON.parse(fs.readFileSync(filePath));
+    conversation.lastMutation = mutation;
+    let ready = JSON.stringify(conversation);
+
+    fs.writeFile(filePath, ready, (err) => {
+        if (err){
+        console.log(err)};
+        })
+    
+    res.status(200).send({"msg": "well done!"})
 }
 
 module.exports = {
-    mutations
+    mutations,
+    mutationLogger
 }

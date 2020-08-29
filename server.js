@@ -76,6 +76,11 @@ app.post('/mutations', (req,res) => {
     mutations.mutations(req,res);
 })
 
+// for logging the last known mutation
+app.patch('/mutations', (req,res) => {
+    mutations.mutationLogger(req,res);
+})
+
 // requesting conversations — ie, the current
 // documents receiving edits
 const conversations = require('./controllers/conversations');
