@@ -38,7 +38,7 @@ const delete_conversations = (req, res) =>{
 
 const new_conversation = (req,res) => {
     const file = req.body.file;
-    const filePath = `./conversations/${file}`
+    const filePath = `./conversations/${file}.txt`
     const fileContent = '';
 
     fs.writeFile(filePath, fileContent, (err) => {

@@ -34,10 +34,10 @@ const WebSocketJSONStream = require('@teamwork/websocket-json-stream');
 // connecting server-hosted documents
 // to shareDB backend
 var connection = backend.connect();
-  var doc = connection.get('examples', 'textarea');
+  var doc = connection.get('textAreas', 'textarea');
   doc.fetch(function(err) {
     if (err) throw err;
-    if (!doc) {
+    if (doc.type === null) {
       doc.create({content: ''});
       return;
     }
