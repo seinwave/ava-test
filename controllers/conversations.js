@@ -72,7 +72,8 @@ const rename_conversation = (req, res) =>{
     const newName = req.body.newName;
     const newPath = `./conversations/${newName}.json`
 
-    let conversation = JSON.parse(fs.readFileSync(oldPath));
+    let rawData = fs.readFileSync(oldPath);
+    let conversation = JSON.parse(rawData);
     conversation.id = newName;
     let ready = JSON.stringify(conversation);
     
