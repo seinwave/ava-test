@@ -110,6 +110,14 @@ app.put('/conversations', (req,res) => {
 app.get('*', (req, res, next) => {
     setImmediate(() => { next(new Error('Error!')); });
   });
+
+app.put('*', (req, res, next) => {
+    setImmediate(() => { next(new Error('Error!')); });
+  });
+
+app.post('*', (req, res, next) => {
+    setImmediate(() => { next(new Error('Error!')); });
+  });  
   
 app.use((error, req, res, next) => {
     res.json({ message: error.message });
