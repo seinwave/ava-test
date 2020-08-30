@@ -105,6 +105,16 @@ app.put('/conversations', (req,res) => {
 })
 
 
+// ---- ERROR HANDLING ----
+
+app.get('*', (req, res, next) => {
+    setImmediate(() => { next(new Error('Error!')); });
+  });
+  
+app.use((error, req, res, next) => {
+    res.json({ message: error.message });
+  });
+  
 
 // ---- INITIALIZING THE SERVER ----
 
