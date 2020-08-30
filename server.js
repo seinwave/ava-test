@@ -13,7 +13,13 @@ app.use(bodyParser.urlencoded({ extended: true }));
 
 // setting CORS configuration
 app.use( (req, res, next) => {
-    
+
+    var allowedOrigins = ['http://localhost:3000/ava-frontend', 'http://localhost:3000', 'https://seinwave.github.io/ava-frontend/', 'https://app.ava.me'];
+    var origin = req.headers.origin;
+    if(allowedOrigins.indexOf(origin) > -1){
+        res.setHeader('Access-Control-Allow-Origin', origin);
+    }
+
     res.header('Access-Control-Allow-Origin', "*")
     res.header('Access-Control-Allow-Headers', 
     'Origin, X-Requested-With, Content-Type, Accept');
@@ -117,7 +123,11 @@ app.put('*', (req, res, next) => {
 
 app.post('*', (req, res, next) => {
     setImmediate(() => { next(new Error("Invalid request")); });
-  });  
+  });
+  
+app.delete('*', (req, res, next) => {
+    setImmediate(() => { next(new Error("Invalid request")); });
+  }); 
   
 app.use((error, req, res, next) => {
     res.status(400)
