@@ -108,18 +108,19 @@ app.put('/conversations', (req,res) => {
 // ---- ERROR HANDLING ----
 
 app.get('*', (req, res, next) => {
-    setImmediate(() => { next(new Error('Error!')); });
+    setImmediate(() => { next(new Error("Invalid request")); });
   });
 
 app.put('*', (req, res, next) => {
-    setImmediate(() => { next(new Error('Error!')); });
+    setImmediate(() => { next(new Error("Invalid request")); });
   });
 
 app.post('*', (req, res, next) => {
-    setImmediate(() => { next(new Error('Error!')); });
+    setImmediate(() => { next(new Error("Invalid request")); });
   });  
   
 app.use((error, req, res, next) => {
+    res.status(400)
     res.json({
     name: error.name, 
     message: error.message,
