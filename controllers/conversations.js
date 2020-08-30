@@ -48,7 +48,7 @@ const new_conversation = (req,res) => {
     const file = req.body.file;
     const filePath = `./conversations/${file}.json`
 
-    let id = file; 
+    let id = `${file}.json`; 
     let content = '';
     let lastMutation = []
 
@@ -76,7 +76,7 @@ const rename_conversation = (req, res) =>{
     let conversation = JSON.parse(rawData);
     conversation.id = newName;
     let ready = JSON.stringify(conversation);
-    console.log("READY:", ready)
+    console.log("RENAMING:", ready)
     
     fs.rename(oldPath, newPath, (err) => {
         if (err) console.log(err)
