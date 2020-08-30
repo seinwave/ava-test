@@ -14,6 +14,12 @@ const mutations = (req, res) => {
         if (err){
         console.log(err)};
         })
+
+    res.status(201).send({
+        "ok": true,
+        "msg": "conversation changed",
+        "text": text
+    });
 }
 
 const mutationLogger = (req, res) => {
@@ -31,7 +37,11 @@ const mutationLogger = (req, res) => {
         console.log(err)};
         })
     
-    res.status(200).send({"msg": "well done!"})
+    res.status(200).send({
+        "ok": true,
+        "msg": "mutation logged",
+        "mutation": mutation
+    });
 }
 
 module.exports = {

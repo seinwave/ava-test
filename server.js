@@ -120,7 +120,10 @@ app.post('*', (req, res, next) => {
   });  
   
 app.use((error, req, res, next) => {
-    res.json({ message: error.message });
+    res.json({
+    name: error.name, 
+    message: error.message,
+    stack: error.stack });
   });
   
 

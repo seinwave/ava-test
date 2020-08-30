@@ -22,7 +22,10 @@ const get_conversations = (req, res) =>{
             return conversations.push(new Conversation(id, content, lastMutation))
         })
 
-    return res.status(200).send(conversations)
+    return res.status(200).send(conversations, 
+        {"ok":true,
+        "msg": "conversations retrieved"
+        });
     })
 }
 
@@ -36,9 +39,10 @@ const delete_conversations = (req, res) =>{
         }
     })
 
-    return res.status(200).send({
+    return res.status(204).send({
+        "ok": true,
         "msg" : "conversation deleted"
-    })
+        });
     
 }
 
