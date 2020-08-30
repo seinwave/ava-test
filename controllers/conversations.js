@@ -22,10 +22,7 @@ const get_conversations = (req, res) =>{
             return conversations.push(new Conversation(id, content, lastMutation))
         })
 
-    return res.status(200).send(conversations, 
-        {"ok":true,
-        "msg": "conversations retrieved"
-        });
+    return res.status(200).send(conversations);
     })
 }
 
