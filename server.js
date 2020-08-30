@@ -122,7 +122,8 @@ app.post('*', (req, res, next) => {
 app.use((error, req, res, next) => {
     res.status(400)
     res.json({
-    name: error.name, 
+    name: error.name,
+    status: 400, 
     message: error.message,
     stack: error.stack });
   });
