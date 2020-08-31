@@ -18,7 +18,6 @@ const get_conversations = (req, res) =>{
             id = conversation.id; 
             content = conversation.content;
             lastMutation = conversation.lastMutation;
-
             return conversations.push(new Conversation(id, content, lastMutation))
         })
 
