@@ -29,8 +29,7 @@ const get_conversations = (req, res) =>{
 const delete_conversations = (req, res) =>{
     const file = req.body.file;
     fs.unlink(`./conversations/${file}.json`, (err) =>
-    {
-        if (err){
+    { if (err){
             console.log(err)
         }
     })
@@ -39,11 +38,9 @@ const delete_conversations = (req, res) =>{
         "ok": true,
         "msg" : "conversation deleted"
         });
-    
 }
 
 const new_conversation = (req,res) => {
-    console.log(req.body.file)
     const file = req.body.file;
     const filePath = `./conversations/${file}.json`
 
@@ -72,6 +69,7 @@ const rename_conversation = (req, res) =>{
     let rawData = fs.readFileSync(oldPath);
     let conversation = JSON.parse(rawData);
     conversation.id = newName;
+    conversation.content = conversation.content;
     let ready = JSON.stringify(conversation);
 
     
