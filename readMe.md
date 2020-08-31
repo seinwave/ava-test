@@ -2,7 +2,8 @@
 
 ## TABLE OF CONTENTS
 [Objective](https://github.com/seinwave/ava-test#objective)
-[Development](https://github.com/seinwave/ava-test#development)
+
+##[Development](https://github.com/seinwave/ava-test#development)
 * [Step One: Orientation & Planning](https://github.com/seinwave/ava-test#step-one-orientation--planning)
 * [Step Two: Dummy Front- & Back-ends](https://github.com/seinwave/ava-test#step-two-dummy-front-and-backends)
 * [Step Two: Making Connections](https://github.com/seinwave/ava-test#step-three-making-connections)
