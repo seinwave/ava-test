@@ -1,5 +1,42 @@
 # The Ava Test
 
+## TABLE OF CONTENTS
+[Objective](https://github.com/seinwave/ava-test#objective)
+[Development](https://github.com/seinwave/ava-test#development)
+* [Step One: Orientation & Planning](https://github.com/seinwave/ava-test#step-one-orientation--planning)
+* [Step Two: Dummy Front- & Back-ends](https://github.com/seinwave/ava-test#step-two-dummy-front-and-backends)
+* [Step Two: Making Connections](https://github.com/seinwave/ava-test#step-three-making-connections)
+    - [The `.txt` vs. `.json` issue](https://github.com/seinwave/ava-test#the-txt--json-issue)
+    - [Star toggling & local storage](https://github.com/seinwave/ava-test#star-toggling--local-storage)
+    - [Bonus functions](https://github.com/seinwave/ava-test#bonus-functions)
+        - [New+](https://github.com/seinwave/ava-test#new)
+        - [Rename](https://github.com/seinwave/ava-test#rename)
+            - [`fs.rename()` vs `fs.renameSync()`](https://github.com/seinwave/ava-test#fsrename-vs-fsrenamesync)
+            - [Subscription issue](https://github.com/seinwave/ava-test#the-subsciption-issue)
+* [Step Four: The OT Algorithm](https://github.com/seinwave/ava-test#step-four-the-ot-algorithm)
+    - [Trying to grok OT](https://github.com/seinwave/ava-test#trying-to-grok-ot)
+    - [Knowing my limitations](https://github.com/seinwave/ava-test#knowing-my-limitations)
+    - [A solution: shareDB](https://github.com/seinwave/ava-test#sharedb)
+    - [Setting up shareDB](https://github.com/seinwave/ava-test#setting-up-sharedb)
+* [Step Five: Auditing & Deployment](https://github.com/seinwave/ava-test#step-five-auditing--deployment)
+    - [Lighthouse](https://github.com/seinwave/ava-test#lighthouse)
+    - [Heroku + GH-pages](https://github.com/seinwave/ava-test#heroku--github-pages)
+[Post-development Evaluation](https://github.com/seinwave/ava-test#post-development-evaluation)
+* [Successes](https://github.com/seinwave/ava-test#successes)
+    - [It works](https://github.com/seinwave/ava-test#functional-rt-collaboration)
+    - [Legible code](https://github.com/seinwave/ava-test#legible-code)
+* [Flaws](https://github.com/seinwave/ava-test#flaws)
+    - [Rename deletes content](https://github.com/seinwave/ava-test#renaming-deletes-content)
+    - [No author data](link)
+    - [No focus on new conversation](link)
+    - [No undo](link)
+    - [Took too long](link)
+
+
+
+
+
+
 ## Objective
 
 Create a real-time collaborative conversation-transcription editor, for two humans to use concurrently. In the spirit of Google Docs, but for transcribed conversations.
@@ -55,8 +92,7 @@ Hooking up the front- and back-end was straightforward, but with a few hiccups. 
 
 I'll try to explain. 
 
-
-- #### The `.txt` / `.json` issue
+#### The `.txt` / `.json` issue
 When I first set up the app's functionality, I stored all the conversations at `.txt` files in the server. Why I did that, I don't know. In retrospect, it's so obviously a bad idea. 
 
 The `.txt` format didn't fit the complex operations I wanted to perform on these files. What if I wanted to re-write their contents? Or record their last mutations? Having no other fields but the file itself made that really difficult.
@@ -65,7 +101,7 @@ So, I had to revise the code. `JSON` was obviously the better choice.
 
 All the server routes / front end functions that were working with plain `.txt`, now had to work with `.json`s. Making this transition was less painful than I thought it would be. But it definitely slowed me down. 
 
-- #### Star toggling + local storage 
+#### Star toggling + local storage 
 Another (smaller) issue I had was messing around with the `star` toggling. I realized that storing a conversation's `star` status in the React state wouldn't work — it would keep getting deleted on page refresh.
 
 And I couldn't send the star-status to the backend, because the project brief specifically says that starring and un-starring should be local only. 
@@ -74,7 +110,7 @@ The best solution, I thought, was local-storage. And it works!
 
 ### Bonus functions
 In the process of development, I added two "bonus" functions that weren't described in the brief, but I believe enhance the app.
-- #### New+
+#### New+
 This was my most important addition, I think. Since the project brief calls for the ability to *delete* conversations, I thought it was very important that the user be able to *add* them.
 
 Otherwise, you could keep deleting conversations until there were none left — and then what? Have to use some server-side fiddling to get a new conversation in there?
@@ -83,7 +119,7 @@ Not ideal.
 
 `New+` seemed like a fitting solution.
 
-- #### Rename
+#### Rename
 Since I added a `New+` button, I needed a default name for new conversations. I decided to do `NewConversation` + the last 3 digits of the Unix time-stamp of when the conversation was created.
 
 But of course we don't want to keep that name! It's too weird! We need to be able to rename these conversations, too!
@@ -92,7 +128,7 @@ Hence, the `rename` route in the `conversations` part of the API.
 
 It worked pretty well, except for two things...
 
-#### fs.rename() vs fs.renameSync()
+##### fs.rename() vs fs.renameSync()
 This was very frustrating, and hard to spot. 
 
 At first, I tried firing my `rename` function with `fs.rename` in Node. Like this:
@@ -135,7 +171,7 @@ More on this, under *Flaws* down below.
 I raced to get the front-end and back-end done, so I could focus more time on the OT algorithm.
 
 I knew it would be a doozy. Here's how I approached it.
-- #### Trying to grok OT
+#### Trying to grok OT
 First, I tried to understand what Operational Transformation actually is.
 
 A couple of YouTube videos got me to a rouch-sketch comprehension. [Google I/O 2009](https://www.youtube.com/watch?v=uOFzWZrsPV0&t=681s) was really helpful. So was [Google I/O 2013](https://www.youtube.com/watch?v=hv14PTbkIs0&t=1790s). 
@@ -152,7 +188,7 @@ All this helped me arrive at a basic definition of the features of OT:
 - But mutations can conflict with each other, if they're not handled correctly
 - To solve this problem, OT uses a transform() function, hosted both server-side and client-side, to achieve convergence between sets of mutations. 
 
-- #### Knowing my limitations
+#### Knowing my limitations
 Now, understanding how that algorithm works is altogether different from being able to *write* it. 
 
 And at this point, I had to acknowledge that writing my own OT algorithm, in the time allotted, is simply beyond my capabilities.
@@ -163,7 +199,7 @@ Therefore, my choice was between shipping a nonfunctional app, or in achieving t
 
 I chose a library. 
 
-- #### shareDB
+#### shareDB
 Luckily, there's a pretty mature and open-source javascript-based real-time collaboration library, that uses OT as its foundation: [shareDB](https://github.com/share/sharedb).
 
 While an extremely useful library, the React-specific documentation was...not wonderful. So I had to dig around into some rejected pull requests to find out how to deploy `shareDB` properly in my app.
@@ -173,7 +209,7 @@ While an extremely useful library, the React-specific documentation was...not wo
 (Incidentally, I have no idea why this pull request wasn't accepted into the main branch of `shareDB`'s repo.)
 
 
-- #### Setting up shareDB
+#### Setting up shareDB
 Underlying shareDB is a websocket-based 'broadcast' from the server, which any number of clients can 'subscribe' to.
 
 This flow of information ensures that any number of client windows can see updates to the shared asset.
@@ -246,14 +282,16 @@ componentDidMount(){
     }
 ```
 
+The most helpful detail to pick out here may be the `doc.on('op')` function, which captures each individual operation enacted on the shared asset.
 
+This is what enables me to pass the `lastMutation` to the front and backend!
 
+And once I got all that working, the App was basically done!
 
-- #### Getting mutations
-    - `doc.on(op)`
+![Working app](doc-assets/working.png).
 
 ### Step Five: Auditing & Deployment
-- #### Lighthouse
+#### Lighthouse
 When I wrap up a project, I like to do a quick [lighthouse](https://developers.google.com/web/tools/lighthouse/) audit, to see if I missed anything.
 
 As it turns out, I missed quite a bit! Mostly on the accessibility front — which is sort of egregious, considering the purpose of this app!
@@ -264,23 +302,59 @@ And I can't be too unhappy with my final score:
 
 ![Final lighthouse score](doc-assets/lighthouse-audit.png)
 
-- #### Heroku / Github pages
+#### Heroku / Github pages
 For deployment, I decided to go with my usual stack: `Heroku` and `gh-pages`. 
 
 Why? They're both simple and intuitive services, and cheap. (Although I am paying the extra $$$ to make sure my `Heroku` dynamo never sleeps. Money well-spent, in my opinion.)
 
 ## Post-development evaluation
-- ### Successes
-    - #### Functional RT collaboration
-    - #### Legible code
+### Successes
+#### Functional RT collaboration
+First things first, the app works.
 
+At least, it meets the demands set out in the brief. It doesn't crash. It relays errors. And it works reasonably well on different devices.
 
-- ### Flaws
-    - #### Rewriting deletes content
-    - #### No author data
-    - #### No focus on new conversation
-    - #### No 'undo'
-    - #### Took longer than I'd like 
-    
+That's the biggest deal to me.
+
+#### Legible code
+Second, I'm happy with all the work I've done to document this effort. Lots of commenting in the code. Pretty sensible (at least, to me) directory structures. And reasonably clean functions.
+
+There are certainly some areas where I could improve. But I think a programmer naive to this codebase could figure their way around, without too much help. 
+
+### Flaws
+#### Renaming deletes content
+When you rename a *new* conversation, there's no problem.
+
+But when you rename an *existing* conversation, the conversation's *content* goes away.
+
+I'm deeply unhappy about this issue. And I can't figure out how to solve it.
+
+I believe this issue comes on the front-end, when `shareDB` needs to decide which document to 'subscribe' to.
+
+Since the file has a new name, `shareDB` can't find it when it attempts to subscribe, and therefore it creates a NEW shared asset to record new mutations.
+
+There's a workaround for this, I'm sure. If I had more time, I would figure out how to fix it. But I hit the deadline before figuring it out.
+
+#### No author data
+Another thing I didn't have time to figure out: how to have author information appear in the front-end.
+
+I know the brief calls for "Bob" and "Alice" clients — but I couldn't figure out how assign author info to every new client that engages with the App.
+
+Again, sure there was a way to achieve this with the stack I've developed here. But I ran out of time.
+
+#### No focus on new conversation
+From a UX perspective, this one's a minor annoyance. When you create a new conversation, the browser doesn't focus on the newly-created element. Instead, you have to scroll down and *find* it. Blech!
+
+I'd like to have it autofocus, but I ran out of time before figuring out how to do that on React, without messing up the app's functionality.
+
+#### No 'undo'
+The brief called for an 'undo' function as a bonus / extra. I was feeling ambitious, so I initially set out to do implemement an 'undo'. But I didn't. Again, with a little more time, I believe I could have. The clock got the better of me.
+
+#### Took longer than I'd like 
+Finally, this was my last disappointment. The brief asks you to spend ~6 hours on this project.
+
+I blew past that, just getting the front- and back-end functionality going. Then another 3-4 hours figuring out how to implement an OT library. Then another hour or so for documentation.
+
+Certainly exceeded the time-frame allotted! 
 
 
