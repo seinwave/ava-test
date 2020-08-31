@@ -27,10 +27,10 @@
     - [Legible code](https://github.com/seinwave/ava-test#legible-code)
 * [Flaws](https://github.com/seinwave/ava-test#flaws)
     - [Rename deletes content](https://github.com/seinwave/ava-test#renaming-deletes-content)
-    - [No author data](link)
-    - [No focus on new conversation](link)
-    - [No undo](link)
-    - [Took too long](link)
+    - [No author data](https://github.com/seinwave/ava-test#no-author-data)
+    - [No focus on new conversation](https://github.com/seinwave/ava-test#no-focus-on-new-conversation)
+    - [No undo](https://github.com/seinwave/ava-test#no-undo)
+    - [Took too long](https://github.com/seinwave/ava-test#took-longer-than-id-like)
 
 
 
@@ -165,7 +165,9 @@ So I had to rewrite the code, like so:
 The `Sync` makes all the difference. Now `fs.renameSync()` *has* to finish, before `fs.writeFile()` begins. 
 
 #### The subsciption issue
-More on this, under *Flaws* down below. 
+A stubborn, thorny problem that I couldn't figure out before submission time.
+
+More on this, [down below](https://github.com/seinwave/ava-test#renaming-deletes-content). 
 
 ### Step Four: The OT Algorithm
 I raced to get the front-end and back-end done, so I could focus more time on the OT algorithm.
