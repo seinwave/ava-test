@@ -67,20 +67,19 @@ const rename_conversation = (req, res) =>{
     const file = req.body.file[0].id;
     const oldPath = `./conversations/${file}.json`
     const newName = req.body.newName;
-    console.log(newName);
     const newPath = `./conversations/${newName}.json`
 
     let rawData = fs.readFileSync(oldPath);
     let conversation = JSON.parse(rawData);
     conversation.id = newName;
     let ready = JSON.stringify(conversation);
-    console.log("RENAMING:", ready)
+
     
-    fs.rename(oldPath, newPath, (err) => {
+    fs.renameSync(oldPath, newPath, (err) => {
         if (err) console.log(err)
     });
 
-    fs.writeFileSync(newPath, ready, err =>{
+    fs.writeFile(newPath, ready, err =>{
         if (err) console.log(err);
     })
 

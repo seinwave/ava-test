@@ -4,8 +4,6 @@ const mutations = (req, res) => {
     const file = req.body.file
     const text = req.body.text
     const filePath = `./conversations/${file}.json`
-
-
     let conversation = JSON.parse(fs.readFileSync(filePath));
     conversation.content = text;
     let ready = JSON.stringify(conversation);
