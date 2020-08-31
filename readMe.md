@@ -207,7 +207,7 @@ Luckily, there's a pretty mature and open-source javascript-based real-time coll
 
 While an extremely useful library, the React-specific documentation was...not wonderful. So I had to dig around into some rejected pull requests to find out how to deploy `shareDB` properly in my app.
 
-(This is what I found)[https://github.com/curran/sharedb/tree/routing-example/examples/textarea-routing]. Very helpful!
+[This is what I found](https://github.com/curran/sharedb/tree/routing-example/examples/textarea-routing). Very helpful!
 
 (Incidentally, I have no idea why this pull request wasn't accepted into the main branch of `shareDB`'s repo.)
 
