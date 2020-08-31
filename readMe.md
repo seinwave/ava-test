@@ -72,9 +72,9 @@ And I couldn't send the star-status to the backend, because the project brief sp
 
 The best solution, I thought, was local-storage. And it works! 
 
-#### Bonus functions
+### Bonus functions
 In the process of development, I added two "bonus" functions that weren't described in the brief, but I believe enhance the app.
-- ##### New+
+- #### New+
 This was my most important addition, I think. Since the project brief calls for the ability to *delete* conversations, I thought it was very important that the user be able to *add* them.
 
 Otherwise, you could keep deleting conversations until there were none left — and then what? Have to use some server-side fiddling to get a new conversation in there?
@@ -83,7 +83,7 @@ Not ideal.
 
 `New+` seemed like a fitting solution.
 
-- ##### Rename
+- #### Rename
 Since I added a `New+` button, I needed a default name for new conversations. I decided to do `NewConversation` + the last 3 digits of the Unix time-stamp of when the conversation was created.
 
 But of course we don't want to keep that name! It's too weird! We need to be able to rename these conversations, too!
@@ -92,7 +92,7 @@ Hence, the `rename` route in the `conversations` part of the API.
 
 It worked pretty well, except for two things...
 
-###### fs.rename() vs fs.renameSync()
+#### fs.rename() vs fs.renameSync()
 This was very frustrating, and hard to spot. 
 
 At first, I tried firing my `rename` function with `fs.rename` in Node. Like this:
@@ -128,16 +128,127 @@ So I had to rewrite the code, like so:
 
 The `Sync` makes all the difference. Now `fs.renameSync()` *has* to finish, before `fs.writeFile()` begins. 
 
-##### The subsciption issue
+#### The subsciption issue
 More on this, under *Flaws* down below. 
 
 ### Step Four: The OT Algorithm
+I raced to get the front-end and back-end done, so I could focus more time on the OT algorithm.
+
+I knew it would be a doozy. Here's how I approached it.
 - #### Trying to grok OT
+First, I tried to understand what Operational Transformation actually is.
+
+A couple of YouTube videos got me to a rouch-sketch comprehension. [Google I/O 2009](https://www.youtube.com/watch?v=uOFzWZrsPV0&t=681s) was really helpful. So was [Google I/O 2013](https://www.youtube.com/watch?v=hv14PTbkIs0&t=1790s). 
+
+![Google's OT slide](doc-assets/ot-slide.png)
+
+But most helpful of all was this: [a real-time OT visualizer](https://operational-transformation.github.io/index.html).
+
+This captured this exact flow of information, between two clients, and the server.
+
+All this helped me arrive at a basic definition of the features of OT: 
+- OT works on a *shared asset*, like a document
+- Mutations to the shared asset are captured as *operations*, eg - insertions & deletions
+- But mutations can conflict with each other, if they're not handled correctly
+- To solve this problem, OT uses a transform() function, hosted both server-side and client-side, to achieve convergence between sets of mutations. 
+
 - #### Knowing my limitations
-- #### Trying some libraries
-    - `shareJS`, `shareDB`
-    - ##### How to deploy to React?
-        - Searching the `shareDB` repo
+Now, understanding how that algorithm works is altogether different from being able to *write* it. 
+
+And at this point, I had to acknowledge that writing my own OT algorithm, in the time allotted, is simply beyond my capabilities.
+
+Other developers may be able to do that — but not me. 
+
+Therefore, my choice was between shipping a nonfunctional app, or in achieving the real-time collaboration with a library. 
+
+I chose a library. 
+
+- #### shareDB
+Luckily, there's a pretty mature and open-source javascript-based real-time collaboration library, that uses OT as its foundation: [shareDB](https://github.com/share/sharedb).
+
+While an extremely useful library, the React-specific documentation was...not wonderful. So I had to dig around into some rejected pull requests to find out how to deploy `shareDB` properly in my app.
+
+(This is what I found)[https://github.com/curran/sharedb/tree/routing-example/examples/textarea-routing]. Very helpful!
+
+(Incidentally, I have no idea why this pull request wasn't accepted into the main branch of `shareDB`'s repo.)
+
+
+- #### Setting up shareDB
+Underlying shareDB is a websocket-based 'broadcast' from the server, which any number of clients can 'subscribe' to.
+
+This flow of information ensures that any number of client windows can see updates to the shared asset.
+
+Here's how it's configured on my server:
+
+```
+// ---- CONFIGURING OT BACKEND ----
+
+// connecting server-hosted documents
+// to shareDB backend
+var connection = backend.connect();
+  var doc = connection.get('textAreas', 'textarea');
+  doc.fetch(function(err) {
+    if (err) throw err;
+    if (doc.type === null) {
+      doc.create({content: ''});
+      return;
+    }
+});
+
+
+// creating a websocket-ready server,
+// that shareDB is listening to
+const server = http.createServer(app);
+const wss = new WebSocket.Server({server: server});
+wss.on('connection', (ws) => {
+    const stream = new WebSocketJSONStream(ws);
+    backend.listen(stream);
+})
+```
+
+And here's how this connection is rendered in the `<Connection/>` component of my app:
+
+```
+const webSocket = new WebSocket('wss://ava-backend.herokuapp.com/');
+
+const connection = new sharedb.Connection(webSocket);
+export default connection;
+```
+
+Finally, here's how the 'subscription' happens in the `<Conversation/>` component, once it mounts:
+
+```
+componentDidMount(){
+        // Get a reference to the textArea DOM node.
+        const textArea = ReactDOM.findDOMNode(this.textArea.current);
+        let targetConversation = this.props.conversations.filter(c => c.id === this.props.route);
+        let stringData = targetConversation[0].content;
+
+        // Create local Doc instance, mapped
+        // to the current conversation
+        const collection = 'textPads';
+        const doc = connection.get(collection, `${this.props.route}.json`);
+
+        // Getting operation details
+        doc.on('op', (op) => {
+            return this.opHandler(op);
+        });
+        
+        // subscribe to the server's updates
+        // on the document
+        doc.subscribe(function(err) {
+            if (err) throw err;
+            createIfNeeded(doc, stringData, () => {    
+            }); 
+            const binding = new StringBinding(textArea, doc);
+            binding.setup();
+        });
+    }
+```
+
+
+
+
 - #### Getting mutations
     - `doc.on(op)`
 
