@@ -54,13 +54,11 @@ const new_conversation = (req,res) => {
 
     const convToLog = 
     JSON.stringify(new Conversation(id,content,lastMutation));
-    
     fs.writeFile(filePath, convToLog, (err) => {
         if (err){
         console.log(err)
         };
     })
-
     return res.status(200).send({
             "msg" : "conversation created"
     })
