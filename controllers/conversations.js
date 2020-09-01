@@ -69,7 +69,6 @@ const rename_conversation = (req, res) =>{
     let rawData = fs.readFileSync(oldPath);
     let conversation = JSON.parse(rawData);
     conversation.id = newName;
-    conversation.content = conversation.content;
     let ready = JSON.stringify(conversation);
 
     
