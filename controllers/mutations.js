@@ -3,7 +3,7 @@ const fs = require('fs');
 const mutations = (req, res) => {
     const file = req.body.file
     const text = req.body.text
-    const filePath = `./conversations/${file}.json`
+    const filePath = `./conversations/${file}`
     let conversation = JSON.parse(fs.readFileSync(filePath));
     conversation.content = text;
     let ready = JSON.stringify(conversation);
@@ -23,7 +23,7 @@ const mutations = (req, res) => {
 const mutationLogger = (req, res) => {
 
     const file = req.body.file;
-    const filePath = `./conversations/${file}.json`
+    const filePath = `./conversations/${file}`
     const mutation = req.body.mutation;
 
     let conversation = JSON.parse(fs.readFileSync(filePath));

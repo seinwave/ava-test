@@ -166,9 +166,21 @@ So I had to rewrite the code, like so:
 The `Sync` makes all the difference. Now `fs.renameSync()` *has* to finish, before `fs.writeFile()` begins. 
 
 #### The subsciption issue
-A stubborn, thorny problem that I couldn't figure out before submission time.
+A stubborn, thorny problem that I couldn't figure out before submission time. But later solved.
 
-More on this, [down below](https://github.com/seinwave/ava-test#renaming-deletes-content). 
+The issue was this. 
+
+When you rename a *new* conversation, there's no problem.
+
+But when you rename an *existing* conversation, the conversation's *content* goes away.
+
+I solved this issue by changing how conversations were renamed.
+
+Instead of overwriting the actual file name of the `.json`, I had the rename function just change the conversation's `id`. 
+
+This way, the display name would always be the `id`, so the user could see a new name. But the actual `.json` would always have its original name — meaning that `shareDB` would have a persistent asset to subscribe to.
+
+Problem solved!
 
 ### Step Four: The OT Algorithm
 I raced to get the front-end and back-end done, so I could focus more time on the OT algorithm.
@@ -325,18 +337,6 @@ Second, I'm happy with all the work I've done to document this effort. Lots of c
 There are certainly some areas where I could improve. But I think a programmer naive to this codebase could figure their way around, without too much help. 
 
 ### Flaws
-#### Renaming deletes content
-When you rename a *new* conversation, there's no problem.
-
-But when you rename an *existing* conversation, the conversation's *content* goes away.
-
-I'm deeply unhappy about this issue. And I can't figure out how to solve it.
-
-I believe this issue comes on the front-end, when `shareDB` needs to decide which document to 'subscribe' to.
-
-Since the file has a new name, `shareDB` can't find it when it attempts to subscribe, and therefore it creates a NEW shared asset to record new mutations.
-
-There's a workaround for this, I'm sure. If I had more time, I would figure out how to fix it. But I hit the deadline before figuring it out.
 
 #### No author data
 Another thing I didn't have time to figure out: how to have author information appear in the front-end.

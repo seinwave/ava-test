@@ -1,6 +1,7 @@
 const fs = require('fs');
 
-function Conversation(id, content, lastMutation){
+function Conversation(fileName, id, content, lastMutation){
+    this.fileName = fileName
     this.id = id;
     this.lastMutation = lastMutation;
     this.content = content;
@@ -8,6 +9,7 @@ function Conversation(id, content, lastMutation){
 
 const get_conversations = (req, res) =>{
     let conversations = []
+    let fileName
     let id
     let content
     let lastMutation = []; 
@@ -16,9 +18,11 @@ const get_conversations = (req, res) =>{
             let rawData = fs.readFileSync(`./conversations/${file}`);
             let conversation = JSON.parse(rawData);
             id = conversation.id; 
+            fileName = conversation.fileName
             content = conversation.content;
             lastMutation = conversation.lastMutation;
-            return conversations.push(new Conversation(id, content, lastMutation))
+            let newConversation = new Conversation(fileName, id, content, lastMutation)
+            return conversations.push(newConversation)
         })
 
     return res.status(200).send(conversations);
@@ -44,12 +48,15 @@ const new_conversation = (req,res) => {
     const file = req.body.file;
     const filePath = `./conversations/${file}.json`
 
-    let id = file; 
+    let id = file;
+    let fileName = `${file}.json` 
     let content = '';
     let lastMutation = []
 
-    const convToLog = 
-    JSON.stringify(new Conversation(id,content,lastMutation));
+    const conv = new Conversation(fileName,id,content,lastMutation)
+    const convToLog = JSON.stringify(conv);
+    console.log(convToLog)
+    
     fs.writeFileSync(filePath, convToLog, (err) => {
         if (err){
         console.log(err)
@@ -61,22 +68,17 @@ const new_conversation = (req,res) => {
 }
 
 const rename_conversation = (req, res) =>{
-    const file = req.body.file[0].id;
-    const oldPath = `./conversations/${file}.json`
+    const file = req.body.file[0].fileName;
+    const oldPath = `./conversations/${file}`
     const newName = req.body.newName;
-    const newPath = `./conversations/${newName}.json`
 
     let rawData = fs.readFileSync(oldPath);
     let conversation = JSON.parse(rawData);
     conversation.id = newName;
+    console.log(conversation)
     let ready = JSON.stringify(conversation);
 
-    
-    fs.renameSync(oldPath, newPath, (err) => {
-        if (err) console.log(err)
-    });
-
-    fs.writeFile(newPath, ready, err =>{
+    fs.writeFileSync(oldPath, ready, err =>{
         if (err) console.log(err);
     })
 
