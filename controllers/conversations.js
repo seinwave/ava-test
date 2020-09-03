@@ -55,8 +55,7 @@ const new_conversation = (req,res) => {
 
     const conv = new Conversation(fileName,id,content,lastMutation)
     const convToLog = JSON.stringify(conv);
-    console.log(convToLog)
-    
+
     fs.writeFileSync(filePath, convToLog, (err) => {
         if (err){
         console.log(err)
@@ -75,7 +74,6 @@ const rename_conversation = (req, res) =>{
     let rawData = fs.readFileSync(oldPath);
     let conversation = JSON.parse(rawData);
     conversation.id = newName;
-    console.log(conversation)
     let ready = JSON.stringify(conversation);
 
     fs.writeFileSync(oldPath, ready, err =>{

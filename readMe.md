@@ -27,9 +27,9 @@
     - [It works](https://github.com/seinwave/ava-test#functional-rt-collaboration)
     - [Legible code](https://github.com/seinwave/ava-test#legible-code)
 * [Flaws](https://github.com/seinwave/ava-test#flaws)
-    - [Rename deletes content](https://github.com/seinwave/ava-test#renaming-deletes-content)
     - [No author data](https://github.com/seinwave/ava-test#no-author-data)
     - [No focus on new conversation](https://github.com/seinwave/ava-test#no-focus-on-new-conversation)
+    - [No persistence](https://github.com/seinwave/ava-test#no-focus-on-new-conversation)
     - [No undo](https://github.com/seinwave/ava-test#no-undo)
     - [Took too long](https://github.com/seinwave/ava-test#took-longer-than-id-like)
 
@@ -352,6 +352,17 @@ I'd like to have it autofocus, but I ran out of time before figuring out how to 
 
 #### No 'undo'
 The brief called for an 'undo' function as a bonus / extra. I was feeling ambitious, so I initially set out to do implemement an 'undo'. But I didn't. Again, with a little more time, I believe I could have. The clock got the better of me.
+
+#### Lack of day-to-day persistence
+This is a drawback of deploying on Heroku. Every day, the Heroku server's dynos reset. Which is good for maintenance purposes. But bad for preserving data. 
+
+It means that every day, the existing conversations are erased. Bummer.
+
+The fix is writing these conversations to an external database. (MongoDB would be my choice). 
+
+But in the interest of putting the product out quickly (and because the challenge didn't mention storage), I went without.
+
+Maybe in a future iteration, I'll include DB reads / writes. 
 
 #### Took longer than I'd like 
 Finally, this was my last disappointment. The brief asks you to spend ~6 hours on this project.
