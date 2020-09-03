@@ -29,7 +29,7 @@
 * [Flaws](https://github.com/seinwave/ava-test#flaws)
     - [No author data](https://github.com/seinwave/ava-test#no-author-data)
     - [No focus on new conversation](https://github.com/seinwave/ava-test#no-focus-on-new-conversation)
-    - [No persistence](https://github.com/seinwave/ava-test#no-focus-on-new-conversation)
+    - [No persistence](https://github.com/seinwave/ava-test#lack-of-day-to-day-persistence)
     - [No undo](https://github.com/seinwave/ava-test#no-undo)
     - [Took too long](https://github.com/seinwave/ava-test#took-longer-than-id-like)
 
