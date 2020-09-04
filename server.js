@@ -39,6 +39,7 @@ const WebSocketJSONStream = require('@teamwork/websocket-json-stream');
 
 // connecting server-hosted documents
 // to shareDB backend
+// see documentation here: https://github.com/share/sharedb
 var connection = backend.connect();
   var doc = connection.get('textAreas', 'textarea');
   doc.fetch(function(err) {
@@ -52,6 +53,7 @@ var connection = backend.connect();
 
 // creating a websocket-ready server,
 // that shareDB is listening to
+// followed the directions here: https://github.com/websockets/ws
 const server = http.createServer(app);
 const wss = new WebSocket.Server({server: server});
 wss.on('connection', (ws) => {
