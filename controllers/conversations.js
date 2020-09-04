@@ -32,7 +32,7 @@ const get_conversations = (req, res) =>{
 
 const delete_conversations = (req, res) =>{
     const file = req.body.file;
-    fs.unlink(`./conversations/${file}.json`, (err) =>
+    fs.unlink(`./conversations/${file}`, (err) =>
     { if (err){
             console.log(err)
         }
