@@ -19,7 +19,7 @@ const get_conversations = (req, res) =>{
     let content
     let lastMutation = [];
     let Convos = MongoConversation.find({})
-    console.log(Convos._collection[0].collection[0].collection);
+    console.log(Convos._collection);
 
     fs.readdir('./conversations', (err,files) => {
         files.map(file => {
