@@ -48,7 +48,7 @@ const delete_conversations = (req, res) =>{
         });
 }
 
-const new_conversation = (req,res) => {
+const new_conversation = async (req,res) => {
     const file = req.body.file;
     const filePath = `./conversations/${file}.json`
 
