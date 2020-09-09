@@ -21,20 +21,16 @@ const get_conversations = async (req, res) =>{
     let Convos = await MongoConversation.find({})
     console.log(Convos);
 
-    fs.readdir('./conversations', (err,files) => {
-        files.map(file => {
-            let rawData = fs.readFileSync(`./conversations/${file}`);
-            let conversation = JSON.parse(rawData);
-            id = conversation.id; 
-            fileName = conversation.fileName
-            content = conversation.content;
-            lastMutation = conversation.lastMutation;
-            let newConversation = new Conversation(fileName, id, content, lastMutation)
-            return conversations.push(newConversation)
-        })
+    Convos.map(conversation => {
+        id = conversation.id; 
+        fileName = conversation.fileName
+        content = conversation.content;
+        lastMutation = conversation.lastMutation;
+        let newConversation = new Conversation(fileName, id, content, lastMutation)
+        return conversations.push(newConversation)
+    })
 
     return res.status(200).send(conversations);
-    })
 }
 
 
@@ -71,7 +67,7 @@ const new_conversation = async (req,res) => {
         fileName: conv.fileName,
         id: conv.id,
         content: conv.content,
-        lastmutation: conv.lastMutation,
+        lastmutation: [],
     })
     try{ 
         let reg = await mongoReady.save();
