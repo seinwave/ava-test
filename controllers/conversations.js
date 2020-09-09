@@ -35,22 +35,13 @@ const get_conversations = async (req, res) =>{
 
 
 const delete_conversations = async (req, res) =>{
-    // todo: get this working with MongoDB Atlas
     const file = req.body.file;
-
     await MongoConversation.deleteOne({fileName: file}, function (err, obj) {
         if (err){
             console.log(err);
         };
-        return console.log(obj.ok)
+        return console.log(obj.ok === 1)
     })
-
-    fs.unlink(`./conversations/${file}`, (err) =>
-    { if (err){
-            console.log(err)
-        }
-    })
-
     return res.status(204).send({
         "ok": true,
         "msg" : "conversation deleted"
@@ -59,19 +50,11 @@ const delete_conversations = async (req, res) =>{
 
 const new_conversation = async (req,res) => {
     const file = req.body.file;
-    const filePath = `./conversations/${file}.json`
-
     let id = file;
     let fileName = `${file}.json` 
     let content = '';
     let lastMutation = []
-
-    // keeping both server-side file writing
-    // and mongoDB writing for now,
-    // while I develop everything around 
-    // mongoDB atlas
     const conv = new Conversation(fileName,id,content,lastMutation);
-    const convToLog = JSON.stringify(conv);
     const mongoReady = new MongoConversation({
         fileName: conv.fileName,
         id: conv.id,
@@ -84,12 +67,6 @@ const new_conversation = async (req,res) => {
     } catch (err){
         console.log(err);
     }
-
-    fs.writeFileSync(filePath, convToLog, (err) => {
-        if (err){
-        console.log(err)
-        };
-    })
     return res.status(200).send({
             "msg" : "conversation created"
     })
