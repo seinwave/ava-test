@@ -58,7 +58,7 @@ const new_conversation = async (req,res) => {
         fileName: conv.fileName,
         id: conv.id,
         content: conv.content,
-        lastmutation: [],
+        lastmutation: '',
     })
     try{ 
         let reg = await mongoReady.save();
