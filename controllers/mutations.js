@@ -6,16 +6,13 @@ const mutations = (req, res) => {
     // todo: get this working with MongoDB Atlas
     const file = req.body.file
     const text = req.body.text
-    const filePath = `./conversations/${file}`
-    let conversation = JSON.parse(fs.readFileSync(filePath));
-    conversation.content = text;
-    let ready = JSON.stringify(conversation);
-
-    fs.writeFile(filePath, ready, (err) => {
+    await MongoConversation.findOne({fileName: file}, function (err, doc) {
         if (err){
-        console.log(err)};
-        })
-
+            console.log(err);
+        };
+        doc.content = text;
+        return doc.save(); 
+    })
     res.status(201).send({
         "ok": true,
         "msg": "conversation changed",
@@ -25,20 +22,15 @@ const mutations = (req, res) => {
 
 const mutationLogger = (req, res) => {
     // todo: get this working with MongoDB Atlas
-
     const file = req.body.file;
-    const filePath = `./conversations/${file}`
     const mutation = req.body.mutation;
-
-    let conversation = JSON.parse(fs.readFileSync(filePath));
-    conversation.lastMutation = mutation;
-    let ready = JSON.stringify(conversation);
-
-    fs.writeFile(filePath, ready, (err) => {
+    await MongoConversation.findOne({fileName: file}, function (err, doc) {
         if (err){
-        console.log(err)};
-        })
-    
+            console.log(err);
+        };
+        doc.lastMutation = mutation;
+        return doc.save(); 
+    })
     res.status(200).send({
         "ok": true,
         "msg": "mutation logged",

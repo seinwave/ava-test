@@ -18,8 +18,7 @@ const get_conversations = async (req, res) =>{
     let id
     let content
     let lastMutation = [];
-    let Convos = await MongoConversation.find({})
-    console.log(Convos);
+    let Convos = await MongoConversation.find({});
 
     Convos.map(conversation => {
         id = conversation.id; 
@@ -63,7 +62,6 @@ const new_conversation = async (req,res) => {
     })
     try{ 
         let reg = await mongoReady.save();
-        console.log("Conversation Saved", reg);
     } catch (err){
         console.log(err);
     }
