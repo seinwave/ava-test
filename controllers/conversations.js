@@ -87,13 +87,13 @@ const new_conversation = async (req,res) => {
     })
 }
 
-const rename_conversation = (req, res) =>{
+const rename_conversation = async (req, res) =>{
     // todo: get this working with MongoDB Atlas
     const file = req.body.file[0].fileName;
     const oldPath = `./conversations/${file}`
     const newName = req.body.newName;
 
-    let Convo = await MongoConversation.findOne({name: file}, function (err, doc) {
+    await MongoConversation.findOne({name: file}, function (err, doc) {
         if (err){
             console.log(err);
         };
@@ -103,14 +103,14 @@ const rename_conversation = (req, res) =>{
 
     })
 
-    let rawData = fs.readFileSync(oldPath);
-    let conversation = JSON.parse(rawData);
-    conversation.id = newName;
-    let ready = JSON.stringify(conversation);
+    // let rawData = fs.readFileSync(oldPath);
+    // let conversation = JSON.parse(rawData);
+    // conversation.id = newName;
+    // let ready = JSON.stringify(conversation);
 
-    fs.writeFileSync(oldPath, ready, err =>{
-        if (err) console.log(err);
-    })
+    // fs.writeFileSync(oldPath, ready, err =>{
+    //     if (err) console.log(err);
+    // })
 
     return res.status(200).send({
         "msg" : "conversation renamed"
