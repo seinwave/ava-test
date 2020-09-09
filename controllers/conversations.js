@@ -1,4 +1,6 @@
 const fs = require('fs');
+const mongoose = require('mongoose');
+const MongoConversation = mongoose.model('conversations')
 
 function Conversation(fileName, id, content, lastMutation){
     this.fileName = fileName
@@ -7,8 +9,7 @@ function Conversation(fileName, id, content, lastMutation){
     this.content = content;
 }
 
-const mongoose = require('mongoose');
-const MongoConversation = mongoose.model('conversations')
+
 
 
 const get_conversations = (req, res) =>{
@@ -16,7 +17,10 @@ const get_conversations = (req, res) =>{
     let fileName
     let id
     let content
-    let lastMutation = []; 
+    let lastMutation = [];
+    let files = MongoConversation.find({}).toArray(function(err, result){
+        console.log(files);
+    });
     fs.readdir('./conversations', (err,files) => {
         files.map(file => {
             let rawData = fs.readFileSync(`./conversations/${file}`);
@@ -57,6 +61,10 @@ const new_conversation = async (req,res) => {
     let content = '';
     let lastMutation = []
 
+    // keeping both server-side file writing
+    // and mongoDB writing for now,
+    // while I develop everything around 
+    // mongoDB atlas
     const conv = new Conversation(fileName,id,content,lastMutation);
     const convToLog = JSON.stringify(conv);
     const mongoReady = new MongoConversation({
