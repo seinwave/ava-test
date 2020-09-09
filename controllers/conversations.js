@@ -98,7 +98,8 @@ const rename_conversation = (req, res) =>{
             console.log(err);
         };
 
-        doc.name = file; 
+        doc.name = file;
+        return doc.save(); 
 
     })
 
