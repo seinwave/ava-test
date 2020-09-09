@@ -93,12 +93,14 @@ const rename_conversation = async (req, res) =>{
     const oldPath = `./conversations/${file}`
     const newName = req.body.newName;
 
-    await MongoConversation.findOne({fileName: file}, function (err, doc) {
+    await MongoConversation.findOne({id: file}, function (err, doc) {
         if (err){
             console.log(err);
         };
+        console.log('file is:', file)
+        console.log(doc);
 
-        doc.fileName = file;
+        doc.id = file;
         return doc.save(); 
 
     })
