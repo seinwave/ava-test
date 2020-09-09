@@ -63,7 +63,7 @@ wss.on('connection', (ws) => {
 
 
 // ---- DB STORAGE ---- 
-
+const config =  require("./config/config.js")
 const mongoose = require('mongoose')
 mongoose.connect(config.mongoURI, { useNewUrlParser: true});
 require('./models/MongoConversations')
