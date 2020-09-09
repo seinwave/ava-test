@@ -62,6 +62,12 @@ wss.on('connection', (ws) => {
 })
 
 
+// ---- DB STORAGE ---- 
+
+const mongoose = require('mongoose')
+mongoose.connect(config.mongoURI, { useNewUrlParser: true});
+require('./models/MongoConversations')
+
 // ---- ROUTING ----
 
 // ping & pong — simple call & response

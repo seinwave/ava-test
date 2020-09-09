@@ -7,6 +7,10 @@ function Conversation(fileName, id, content, lastMutation){
     this.content = content;
 }
 
+const mongoose = require('mongoose');
+const MongoConversation = mongoose.model('conversations')
+
+
 const get_conversations = (req, res) =>{
     let conversations = []
     let fileName
@@ -53,8 +57,20 @@ const new_conversation = (req,res) => {
     let content = '';
     let lastMutation = []
 
-    const conv = new Conversation(fileName,id,content,lastMutation)
+    const conv = new Conversation(fileName,id,content,lastMutation);
     const convToLog = JSON.stringify(conv);
+    const mongoReady = new MongoConversation({
+        fileName: conv.fileName,
+        id: conv.id,
+        content: conv.content,
+        lastmutation: conv.lastMutation,
+    })
+    try{ 
+        let reg = await mongoReady.save();
+        console.log("Conversation Saved", reg);
+    } catch (err){
+        console.log(err);
+    }
 
     fs.writeFileSync(filePath, convToLog, (err) => {
         if (err){
