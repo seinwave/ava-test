@@ -34,9 +34,17 @@ const get_conversations = async (req, res) =>{
 }
 
 
-const delete_conversations = (req, res) =>{
+const delete_conversations = async (req, res) =>{
     // todo: get this working with MongoDB Atlas
     const file = req.body.file;
+
+    await MongoConversation.deleteOne({fileName: file}, function (err, obj) {
+        if (err){
+            console.log(err);
+        };
+        return console.log(obj.ok)
+    })
+
     fs.unlink(`./conversations/${file}`, (err) =>
     { if (err){
             console.log(err)
@@ -88,32 +96,15 @@ const new_conversation = async (req,res) => {
 }
 
 const rename_conversation = async (req, res) =>{
-    // todo: get this working with MongoDB Atlas
     const file = req.body.file[0].fileName;
-    const oldPath = `./conversations/${file}`
     const newName = req.body.newName;
-
     await MongoConversation.findOne({fileName: file}, function (err, doc) {
         if (err){
             console.log(err);
         };
-        console.log('file is:', file)
-        console.log(doc);
-
         doc.id = newName;
         return doc.save(); 
-
     })
-
-    // let rawData = fs.readFileSync(oldPath);
-    // let conversation = JSON.parse(rawData);
-    // conversation.id = newName;
-    // let ready = JSON.stringify(conversation);
-
-    // fs.writeFileSync(oldPath, ready, err =>{
-    //     if (err) console.log(err);
-    // })
-
     return res.status(200).send({
         "msg" : "conversation renamed"
     })
