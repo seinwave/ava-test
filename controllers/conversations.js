@@ -35,6 +35,7 @@ const get_conversations = async (req, res) =>{
 
 
 const delete_conversations = (req, res) =>{
+    // todo: get this working with MongoDB Atlas
     const file = req.body.file;
     fs.unlink(`./conversations/${file}`, (err) =>
     { if (err){
@@ -87,6 +88,7 @@ const new_conversation = async (req,res) => {
 }
 
 const rename_conversation = (req, res) =>{
+    // todo: get this working with MongoDB Atlas
     const file = req.body.file[0].fileName;
     const oldPath = `./conversations/${file}`
     const newName = req.body.newName;
