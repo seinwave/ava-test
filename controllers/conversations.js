@@ -17,7 +17,7 @@ const get_conversations = async (req, res) =>{
     let fileName
     let id
     let content
-    let lastMutation = [];
+    let lastMutation;
     let Convos = await MongoConversation.find({});
 
     Convos.map(conversation => {
