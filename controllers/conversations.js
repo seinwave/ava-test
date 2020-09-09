@@ -93,6 +93,15 @@ const rename_conversation = (req, res) =>{
     const oldPath = `./conversations/${file}`
     const newName = req.body.newName;
 
+    let Convo = await MongoConversation.findOne({name: file}, function (err, doc) {
+        if (err){
+            console.log(err);
+        };
+
+        doc.name = file; 
+
+    })
+
     let rawData = fs.readFileSync(oldPath);
     let conversation = JSON.parse(rawData);
     conversation.id = newName;
