@@ -98,7 +98,7 @@ const rename_conversation = async (req, res) =>{
             console.log(err);
         };
 
-        doc.name = file;
+        doc.fileName = file;
         return doc.save(); 
 
     })
