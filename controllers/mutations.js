@@ -2,7 +2,7 @@ const fs = require('fs');
 const mongoose = require('mongoose');
 const MongoConversation = mongoose.model('conversations')
 
-const mutations = (req, res) => {
+const mutations = async (req, res) => {
     // todo: get this working with MongoDB Atlas
     const file = req.body.file
     const text = req.body.text
@@ -20,7 +20,7 @@ const mutations = (req, res) => {
     });
 }
 
-const mutationLogger = (req, res) => {
+const mutationLogger = async (req, res) => {
     // todo: get this working with MongoDB Atlas
     const file = req.body.file;
     const mutation = req.body.mutation;
