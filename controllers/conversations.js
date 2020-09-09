@@ -9,9 +9,6 @@ function Conversation(fileName, id, content, lastMutation){
     this.content = content;
 }
 
-
-
-
 const get_conversations = async (req, res) =>{
     let conversations = []
     let fileName
@@ -59,7 +56,7 @@ const new_conversation = async (req,res) => {
         fileName: conv.fileName,
         id: conv.id,
         content: conv.content,
-        lastmutation: conv.lastMutation,
+        lastMutation: conv.lastMutation,
     })
     try{ 
         await mongoReady.save();
