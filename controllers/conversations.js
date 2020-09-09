@@ -100,7 +100,7 @@ const rename_conversation = async (req, res) =>{
         console.log('file is:', file)
         console.log(doc);
 
-        doc.id = file;
+        doc.id = newName;
         return doc.save(); 
 
     })
