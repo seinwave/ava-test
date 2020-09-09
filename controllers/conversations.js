@@ -52,16 +52,16 @@ const new_conversation = async (req,res) => {
     let id = file;
     let fileName = `${file}.json` 
     let content = '';
-    let lastMutation = []
+    let lastMutation = ''
     const conv = new Conversation(fileName,id,content,lastMutation);
     const mongoReady = new MongoConversation({
         fileName: conv.fileName,
         id: conv.id,
         content: conv.content,
-        lastmutation: '',
+        lastmutation: conv.lastMutation,
     })
     try{ 
-        let reg = await mongoReady.save();
+        await mongoReady.save();
     } catch (err){
         console.log(err);
     }
