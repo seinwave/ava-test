@@ -50,10 +50,11 @@ const delete_conversations = async (req, res) =>{
 const new_conversation = async (req,res) => {
     const file = req.body.file;
     let id = file;
-    let fileName = `${file}.json` 
+    let fileName = `${file}.json`;
     let content = '';
-    let lastMutation = ''
+    let lastMutation = '';
     const conv = new Conversation(fileName,id,content,lastMutation);
+    console.log('CONV:::::::::::', conv)
     const mongoReady = new MongoConversation({
         fileName: conv.fileName,
         id: conv.id,
