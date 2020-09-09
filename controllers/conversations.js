@@ -12,14 +12,14 @@ function Conversation(fileName, id, content, lastMutation){
 
 
 
-const get_conversations = (req, res) =>{
+const get_conversations = async (req, res) =>{
     let conversations = []
     let fileName
     let id
     let content
     let lastMutation = [];
-    let Convos = MongoConversation.find({})
-    console.log(Convos._collection);
+    let Convos = await MongoConversation.find({})
+    console.log(Convos);
 
     fs.readdir('./conversations', (err,files) => {
         files.map(file => {
