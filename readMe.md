@@ -1,4 +1,4 @@
-# The Ava Test
+# The Collabatron
 
 ## TABLE OF CONTENTS
 [Objective](https://github.com/seinwave/ava-test#objective)
@@ -105,14 +105,15 @@ All the server routes / front end functions that were working with plain `.txt`,
 #### Star toggling + local storage 
 Another (smaller) issue I had was messing around with the `star` toggling. I realized that storing a conversation's `star` status in the React state wouldn't work — it would keep getting deleted on page refresh.
 
-And I couldn't send the star-status to the backend, because the project brief specifically says that starring and un-starring should be local only. 
+And I don't want to send the star-status to the backend, because I want that to be preserved on local machines only.  
 
 The best solution, I thought, was local-storage. And it works! 
 
 ### Bonus functions
-In the process of development, I added two "bonus" functions that weren't described in the brief, but I believe enhance the app.
+In the process of development, I added two "bonus" functions that I believe enhance the app.
+
 #### New+
-This was my most important addition, I think. Since the project brief calls for the ability to *delete* conversations, I thought it was very important that the user be able to *add* them.
+This was my most important addition, I think. Since to be able to *delete* conversations, I thought it was very important that the user be able to *add* them.
 
 Otherwise, you could keep deleting conversations until there were none left — and then what? Have to use some server-side fiddling to get a new conversation in there?
 
@@ -206,7 +207,7 @@ All this helped me arrive at a basic definition of the features of OT:
 #### Knowing my limitations
 Now, understanding how that algorithm works is altogether different from being able to *write* it. 
 
-And at this point, I had to acknowledge that writing my own OT algorithm, in the time allotted, is simply beyond my capabilities.
+And at this point, I had to acknowledge that writing my own OT algorithm, in the time I set out for myself, is simply beyond my capabilities.
 
 Other developers may be able to do that — but not me. 
 
@@ -327,7 +328,7 @@ Why? They're both simple and intuitive services, and cheap. (Although I am payin
 #### Functional RT collaboration
 First things first, the app works.
 
-At least, it meets the demands set out in the brief. It doesn't crash. It relays errors. And it works reasonably well on different devices.
+It doesn't crash. It relays errors. And it works reasonably well on different devices.
 
 That's the biggest deal to me.
 
@@ -341,7 +342,7 @@ There are certainly some areas where I could improve. But I think a programmer n
 #### No author data
 Another thing I didn't have time to figure out: how to have author information appear in the front-end.
 
-I know the brief calls for "Bob" and "Alice" clients — but I couldn't figure out how assign author info to every new client that engages with the App.
+I'd like to have author details pop up during collaboration. But I couldn't figure out how assign author info to every new client that engages with the App.
 
 Again, sure there was a way to achieve this with the stack I've developed here. But I ran out of time.
 
@@ -351,24 +352,9 @@ From a UX perspective, this one's a minor annoyance. When you create a new conve
 I'd like to have it autofocus, but I ran out of time before figuring out how to do that on React, without messing up the app's functionality.
 
 #### No 'undo'
-The brief called for an 'undo' function as a bonus / extra. I was feeling ambitious, so I initially set out to do implemement an 'undo'. But I didn't. Again, with a little more time, I believe I could have. The clock got the better of me.
+I was feeling ambitious, so I initially set out to do implemement an 'undo'. But I didn't. Again, with a little more time, I believe I could have. The clock got the better of me.
 
-#### Lack of day-to-day persistence
-This is a drawback of deploying on Heroku. Every day, the Heroku server's dynos reset. Which is good for maintenance purposes. But bad for preserving data. 
 
-It means that every day, the existing conversations are erased. Bummer.
 
-The fix is writing these conversations to an external database. (MongoDB would be my choice). 
-
-But in the interest of putting the product out quickly (and because the challenge didn't mention storage), I went without.
-
-Maybe in a future iteration, I'll include DB reads / writes. 
-
-#### Took longer than I'd like 
-Finally, this was my last disappointment. The brief asks you to spend ~6 hours on this project.
-
-I blew past that, just getting the front- and back-end functionality going. Then another 3-4 hours figuring out how to implement an OT library. Then another hour or so for documentation.
-
-Certainly exceeded the time-frame allotted! 
 
 
